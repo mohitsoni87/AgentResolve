@@ -248,7 +248,7 @@ CREATE OR REPLACE FUNCTION log_order_status_change()
 RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR OLD.status IS DISTINCT FROM NEW.status THEN
-        INSERT INTO order_status_history (order_id, from_status, to_status, note)
+        INSERT INTO orders.order_status_history (order_id, from_status, to_status, note)
         VALUES (
             NEW.id,
             CASE WHEN TG_OP = 'INSERT' THEN NULL ELSE OLD.status END,
