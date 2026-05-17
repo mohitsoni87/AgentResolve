@@ -6,8 +6,6 @@ from typing import Any
 
 from langgraph.graph import MessagesState
 
-from schemas import AgentResponse
-
 
 class AgentState(MessagesState):
     """Shared state across router and specialist agents."""
@@ -20,4 +18,3 @@ class AgentState(MessagesState):
     operation_result: dict[str, Any] | None
     error: str | None
     tool_rounds: int
-    structured_response: AgentResponse | None

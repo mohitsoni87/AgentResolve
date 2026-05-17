@@ -10,9 +10,21 @@ from langchain_core.tools import tool
 
 import db
 
+# Fields stripped before the LLM sees tool results
+_ORDER_STRIP = {"user_id", "customer_phone"}
+_LINE_ITEM_STRIP = {"user_id", "email"}
+
 
 def _json(data: Any) -> str:
     return json.dumps(data, indent=2, default=str)
+
+
+def _safe_orders(orders: list[dict]) -> list[dict]:
+    return [{k: v for k, v in o.items() if k not in _ORDER_STRIP} for o in orders]
+
+
+def _safe_line_items(items: list[dict]) -> list[dict]:
+    return [{k: v for k, v in i.items() if k not in _LINE_ITEM_STRIP} for i in items]
 
 
 @tool
@@ -30,14 +42,7 @@ def find_orders(
     order_id format: ORD-2026-0001. order_date format: YYYY-MM-DD.
     """
     if not any([user_id, order_id, email, product_name, order_date, status]):
-        return _json(
-            {
-                "success": False,
-                "message": "Provide at least one search filter.",
-                "orders": [],
-                "line_items": [],
-            }
-        )
+        return _json({"success": False, "message": "Provide at least one search filter."})
 
     parsed_date: date | None = None
     if order_date:
@@ -53,26 +58,17 @@ def find_orders(
             status=status,
         )
     except Exception as exc:  # noqa: BLE001
-        return _json({"success": False, "message": str(exc), "orders": [], "line_items": []})
+        return _json({"success": False, "message": str(exc)})
 
     if not orders:
-        return _json(
-            {
-                "success": False,
-                "message": "No orders matched your search.",
-                "orders": [],
-                "line_items": [],
-            }
-        )
+        return _json({"success": False, "message": "No orders matched your search."})
 
-    return _json(
-        {
-            "success": True,
-            "message": f"Found {len(orders)} order(s).",
-            "orders": orders,
-            "line_items": line_items,
-        }
-    )
+    return _json({
+        "success": True,
+        "message": f"Found {len(orders)} order(s).",
+        "orders": _safe_orders(orders),
+        "line_items": _safe_line_items(line_items),
+    })
 
 
 @tool
