@@ -165,7 +165,7 @@ def cancel_order(
             FROM orders.orders o
             JOIN orders.users u ON u.id = o.user_id
             WHERE o.order_id = %(order_id)s
-              AND (%(user_id)s IS NULL OR u.id::text = %(user_id)s)
+              AND (%(user_id)s::text IS NULL OR u.id::text = %(user_id)s::text)
             """,
             {"order_id": order_id, "user_id": user_id},
         )
@@ -234,7 +234,7 @@ def update_order_address(
             FROM orders.orders o
             JOIN orders.users u ON u.id = o.user_id
             WHERE o.order_id = %(order_id)s
-              AND (%(user_id)s IS NULL OR u.id::text = %(user_id)s)
+              AND (%(user_id)s::text IS NULL OR u.id::text = %(user_id)s::text)
             """,
             {"order_id": order_id, "user_id": user_id},
         )
