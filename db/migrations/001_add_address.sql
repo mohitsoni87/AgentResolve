@@ -1,0 +1,3 @@
+-- Superseded by 002_drop_address.sql
+-- The address column has been removed in favour of shipping_address only.
+-- This file is kept for history; do not run it on new databases.
