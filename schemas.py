@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 
 class OrderSummary(BaseModel):
-    order_id: str
+    order_id: str | None = None
     status: str | None = None
     total_amount: float | None = None
     placed_at: str | None = None
@@ -15,7 +15,7 @@ class OrderSummary(BaseModel):
 
 
 class LineItemSummary(BaseModel):
-    product_name: str
+    product_name: str | None = None
     quantity: int | None = None
     unit_price: float | None = None
     line_total: float | None = None
