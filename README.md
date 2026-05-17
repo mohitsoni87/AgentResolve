@@ -72,7 +72,15 @@ cp .env.example .env
 # Add your OPENAI_API_KEY (or set OLLAMA_MODEL for local inference)
 ```
 
-### 4. Run the LangGraph server
+### 4. Seed demo data
+
+```bash
+./db/seed.sh
+```
+
+Loads 6 users and 12 orders across all statuses. Safe to re-run — truncates first.
+
+### 5. Run the LangGraph server
 
 ```bash
 uv run langgraph dev
