@@ -90,8 +90,8 @@ def route_user_query(state: AgentState) -> dict[str, Any]:
             return _clarify_state()
         if not decision.order_id:
             return _clarify_state()
-        if modify_action == "change_address" and not decision.new_address:
-            return _clarify_state()
+        # Don't block on missing new_address — let the agent verify the order
+        # is modifiable first, then ask for the address if appropriate
 
     return {
         "active_agent": agent,
