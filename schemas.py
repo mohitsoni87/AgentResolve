@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class OrderSummary(BaseModel):
@@ -32,7 +32,13 @@ class ShipmentSummary(BaseModel):
 class AgentResponse(BaseModel):
     """Structured response — only safe fields, no PII."""
 
-    message: str
+    message: str = Field(
+        description=(
+            "The complete, fully formatted response to show the user. "
+            "Must include all relevant order details, statuses, line items, "
+            "and tracking info inline — do not refer to other fields."
+        )
+    )
     orders: list[OrderSummary] = []
     line_items: list[LineItemSummary] = []
     shipments: list[ShipmentSummary] = []
