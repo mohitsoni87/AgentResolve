@@ -7,19 +7,19 @@ from pydantic import BaseModel, Field
 
 class OrderSummary(BaseModel):
     order_id: str
-    status: str
-    total_amount: float
-    placed_at: str
+    status: str | None = None
+    total_amount: float | None = None
+    placed_at: str | None = None
     shipping_address: str | None = None
     cancellation_reason: str | None = None
 
 
 class LineItemSummary(BaseModel):
     product_name: str
-    quantity: int
-    unit_price: float
-    line_total: float
-    fulfillment_status: str
+    quantity: int | None = None
+    unit_price: float | None = None
+    line_total: float | None = None
+    fulfillment_status: str | None = None
 
 
 class ShipmentSummary(BaseModel):
